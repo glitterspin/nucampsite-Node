@@ -1,5 +1,7 @@
 const express = require('express');
 const Campsite = require('../models/campsite');
+const Partner = require('../models/partner');
+const Promotion = require('../models/promotion');
 
 const campsiteRouter = express.Router();
 
