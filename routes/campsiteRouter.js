@@ -93,12 +93,12 @@ campsiteRouter.route('/:campsiteId/comments')
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
         if (campsite) {
-            campsites.comments.push(req.body);
+            campsite.comments.push(req.body);
             campsite.save()
             .then(campsite => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(campsite.comments);
+                res.json(campsite);
             })
         } else {
             err = new Error(`Campsite ${req.params.campsiteId} not found`);
@@ -117,7 +117,7 @@ campsiteRouter.route('/:campsiteId/comments')
     .then(campsite => {
         if (campsite) {
             for (let i = (campsite.comments.length-1); i >= 0; i--) {
-                campsite.comments.id(campsite.comment[i]._id).remove();
+                campsite.comments.id(campsite.comments[i]._id).remove();
             }
             campsite.save()
             .then(campsite => {
