@@ -3,6 +3,7 @@ const Campsite = require('../models/campsite');
 const Partner = require('../models/partner');
 const Promotion = require('../models/promotion');
 
+//campsite behavior start
 const campsiteRouter = express.Router();
 
 campsiteRouter.route('/')
