@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-function auth(req, res, nest) {
+function auth(req, res, next) {
   console.log(req.headers);
   const authHeader = req.headers.authorization;
   if (!authHeader) {
