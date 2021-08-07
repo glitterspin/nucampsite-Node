@@ -35,6 +35,7 @@ router.post('/signup'), (req, res, next) => {
 router.post('/login', (req, res, next) => {
   if (!req.session.user) {
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
       const err = new Error('You are not authenticated!');
       res.setHeader('WWW-Authenticate', 'Basic');
@@ -56,7 +57,7 @@ router.post('/login', (req, res, next) => {
         const err = new Error('Your password is incorrect!');
         err.status = 401;
         return next(err);
-      } else {
+      } else  if (user.username === username && user.password === password) {
         req.session.user = 'authenticated';
         req.statusCode = 200;
         res.setHeader('Content-type', 'text/plain');
