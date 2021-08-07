@@ -70,6 +70,18 @@ router.post('/login', (req, res, next) => {
     res.setHeader('Content-Type', 'text/plain');
     res.end('You are already authenticated!')
   }
-})
+});
+
+router.get('/logout', (req, res, next) => {
+  if (req.session) {
+    req.session.destroy();
+    res.clearCookie('session-id');
+    res.redirect('/');
+  } else {
+    const err = new Error('You are not logged in!');
+    err.status = 401;
+    return next(err);
+  }
+});
 
 module.exports = router;
