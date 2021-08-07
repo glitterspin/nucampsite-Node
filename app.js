@@ -35,8 +35,6 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//old cookieParser code
-//app.use(cookieParser('12345-12345'));
 
 app.use(session({
   name:'session-id',
