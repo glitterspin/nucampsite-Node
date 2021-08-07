@@ -9,7 +9,8 @@ router.get('/', function(req, res, next) {
 });
 
 //allows a new user to register
-router.post('/signup'), (req, res, next) => {
+router.post('/signup', (req, res, next) => {
+  console.log('succefully entered post endpoint');
   User.findOne({username: req.body.username})
   .then(user => {
     if (user) {
@@ -30,7 +31,7 @@ router.post('/signup'), (req, res, next) => {
     }
   })
   .catch(err => next(err));
-}
+})
 
 router.post('/login', (req, res, next) => {
   if (!req.session.user) {
