@@ -13,6 +13,7 @@ const partnerRouter = require('./routes/partnerRouter');
 
 const mongoose = require('mongoose');
 
+//url
 const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
   useCreateIndex: true,
