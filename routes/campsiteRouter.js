@@ -200,7 +200,8 @@ campsiteRouter.route('/:campsiteId/comments/:commentId')
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
         if (campsite && campsite.comments.id(req.params.commentId)) {
-            if (req.user._id.equals(req.params.commentId).author._id){
+            if(req.user.id.equals(campsite.comments.id(req.params.commentId).author._id))
+            if (req.user._id.equals(campsite.comments.id(req.params.commentId).author._id)){
                 campsite.comments.id(req.params.commentId).remove();
                 campsite.save()
                 .then(campsite => {
