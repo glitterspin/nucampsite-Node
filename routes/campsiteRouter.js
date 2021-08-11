@@ -199,7 +199,10 @@ campsiteRouter.route('/:campsiteId/comments/:commentId')
 .delete(authenticate.verifyUser, (req, res, next) => {
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
+        //if campsite exists, and comment exists
         if (campsite && campsite.comments.id(req.params.commentId)) {
+            //if user id matches comment ID
+            console.log(campsite.comments.id(req.params.commentId).author._id);
             if (req.user._id.equals(campsite.comments.id(req.params.commentId).author._id)){
                 campsite.comments.id(req.params.commentId).remove();
                 campsite.save()
