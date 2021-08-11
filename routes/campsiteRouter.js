@@ -200,7 +200,6 @@ campsiteRouter.route('/:campsiteId/comments/:commentId')
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
         if (campsite && campsite.comments.id(req.params.commentId)) {
-            if(req.user.id.equals(campsite.comments.id(req.params.commentId).author._id))
             if (req.user._id.equals(campsite.comments.id(req.params.commentId).author._id)){
                 campsite.comments.id(req.params.commentId).remove();
                 campsite.save()
@@ -210,19 +209,19 @@ campsiteRouter.route('/:campsiteId/comments/:commentId')
                     res.json(campsite);
                 })
                 .catch(err => next(err));
-             } else if (!campsite){
-                 err = new Error(`Campsite ${req.params.campsiteId} not found`);
-                 err.status = 404;
-                 return next(err);
-             } else {
-                 err = new Error(`Comment ${req.params.commentId} not found`);
-                 err.status = 404;
-                 return next(err);
-             }
+            } else {
+                err = new Error ('You are not authorized to delete this comment.');
+                err.status = 403;
+                return next(err);
+            }}
+        else if (!campsite){
+            err = new Error(`Campsite ${req.params.campsiteId} not found`);
+            err.status = 404;
+            return next(err);
         } else {
-           err = new Error ('You are not authorized to edit this comment.');
-           err.status = 403;
-           return next(err);
+            err = new Error(`Comment ${req.params.commentId} not found`);
+            err.status = 404;
+            return next(err);
         }
     })
     .catch(err => next(err));
