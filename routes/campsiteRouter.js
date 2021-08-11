@@ -199,8 +199,8 @@ campsiteRouter.route('/:campsiteId/comments/:commentId')
 .delete(authenticate.verifyUser, (req, res, next) => {
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
-        if (req.user._id.equals(req.params.commentId).author._id){
-            if (campsite && campsite.comments.id(req.params.commentId)) {
+        if (campsite && campsite.comments.id(req.params.commentId)) {
+            if (req.user._id.equals(req.params.commentId).author._id){
                 campsite.comments.id(req.params.commentId).remove();
                 campsite.save()
                 .then(campsite => {
