@@ -6,7 +6,8 @@ const authenticate = require('../authenticate');
 const campsiteRouter = express.Router();
 
 campsiteRouter.route('/')
-    .get((req, res, next) => {
+    .get((req, res, next) => {    
+        console.log("campsite get");
         Campsite.find()
         .populate('comments.author')
         .then(campsites => {
@@ -17,6 +18,7 @@ campsiteRouter.route('/')
         .catch(err => next(err));
     })
     .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+        console.log("campsite post");
         Campsite.create(req.body)
         .then(campsite => {
             console.log('Campsite Created', campsite);
@@ -79,6 +81,7 @@ campsiteRouter.route('/:campsiteId')
 //comment behavior
 campsiteRouter.route('/:campsiteId/comments')
 .get((req, res, next) => {
+    console.log("comments get");
     Campsite.findById(req.params.campsiteId)
     .populate('comments.author')
     .then(campsite => {
@@ -95,12 +98,13 @@ campsiteRouter.route('/:campsiteId/comments')
     .catch(err => next(err));
 })
 .post(authenticate.verifyUser, (req, res, next) => {
+    console.log("comments post");
     Campsite.findById(req.params.campsiteId)
     .then(campsite => {
         if (campsite) {
             req.body.author = req.user._id;
             campsite.comments.push(req.body);
-            campsite.save()
+            return campsite.save()
             .then(campsite => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -111,8 +115,7 @@ campsiteRouter.route('/:campsiteId/comments')
             err.status = 404;
             return next(err);
         }
-    })
-    .catch(err => next(err));
+    }).catch(err => next(err));
 })
 .put(authenticate.verifyUser, (req, res) => {
     res.statusCode = 403;
